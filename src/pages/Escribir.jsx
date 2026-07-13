@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
 
-const ADMIN_PASSWORD = "tu-contraseña-secreta-aquí"; // la misma que ya tenías
+const ADMIN_PASSWORD = "shawnmendes98"; // la misma que ya tenías
 
 const writableSections = sections.filter((s) =>
   ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
