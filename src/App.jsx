@@ -21,6 +21,7 @@ import Escribir from "./pages/Escribir";
 import PostDetail from "./pages/PostDetail";
 import EscribirPlaylist from "./pages/EscribirPlaylist";
 import Panel from "./pages/Panel";
+import MiniPlayer from "./components/layout/MiniPlayer";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
         <Route path="/panel" element={<Panel />} />
       </Routes>
       <Footer />
+      <MiniPlayer />
     </>
   );
 }
