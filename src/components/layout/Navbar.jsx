@@ -94,7 +94,7 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <ThemeToggle />
+            <ThemeToggle className={linkColor} />
             <Link
               to={contactLink.path}
               className="rounded-full bg-forest px-5 py-2 text-sm font-semibold text-cream"
