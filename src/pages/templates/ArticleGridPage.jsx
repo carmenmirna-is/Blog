@@ -30,12 +30,12 @@ export default function ArticleGridPage({ section }) {
   return (
     <>
       <PageHeader section={section} />
-      <section className="bg-cream py-16">
+      <section className="bg-cream dark:bg-night py-16">
         <div className="mx-auto max-w-6xl px-6">
           {loading ? (
-            <p className="text-center text-ink-soft">Cargando entradas…</p>
+            <p className="text-center text-ink-soft dark:text-cream/70">Cargando entradas…</p>
           ) : items.length === 0 ? (
-            <p className="text-center text-ink-soft">
+            <p className="text-center text-ink-soft dark:text-cream/70">
               Todavía no hay entradas aquí. Vuelve pronto.
             </p>
           ) : (
@@ -44,18 +44,18 @@ export default function ArticleGridPage({ section }) {
               <Link
                 key={item.id}
                 to={`/entrada/${item.id}`}
-                className="block rounded-2xl border border-white/60 bg-paper/80 p-6 shadow-petal transition-transform duration-300 hover:-translate-y-1"
+                className="block rounded-2xl border border-white/60 dark:border-none bg-paper/80 dark:glass-dark p-6 shadow-petal transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="mb-3 flex items-center justify-between">
-                  <span className="rounded-full bg-sage/15 px-3 py-1 text-xs font-semibold text-sage-deep">
+                  <span className="rounded-full bg-sage/15 dark:bg-sage/25 px-3 py-1 text-xs font-semibold text-sage-deep dark:text-sage-light">
                     {item.tag}
                   </span>
-                  <span className="text-xs text-ink-soft">{item.date_label}</span>
+                  <span className="text-xs text-ink-soft dark:text-cream/60">{item.date_label}</span>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-ink">
+                <h3 className="font-display text-xl font-semibold text-ink dark:text-cream">
                   {item.title}
                 </h3>
-                <p className="mt-2 text-sm text-ink-soft">{item.excerpt}</p>
+                <p className="mt-2 text-sm text-ink-soft dark:text-cream/70">{item.excerpt}</p>
               </Link>
             ))}
             </div>
