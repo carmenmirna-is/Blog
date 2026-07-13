@@ -19,6 +19,7 @@ import SobreMi from "./pages/SobreMi";
 import Contacto from "./pages/Contacto";
 import Escribir from "./pages/Escribir";
 import PostDetail from "./pages/PostDetail";
+import EscribirPlaylist from "./pages/EscribirPlaylist";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/escribir" element={<Escribir />} />
         <Route path="/entrada/:id" element={<PostDetail />} />
+        <Route path="/escribir-playlist" element={<EscribirPlaylist />} />
       </Routes>
       <Footer />
     </>
