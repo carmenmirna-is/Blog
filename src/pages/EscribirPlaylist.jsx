@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-const ADMIN_PASSWORD = "tu-contraseña-secreta-aquí"; // la misma que usas en Escribir.jsx
+const ADMIN_PASSWORD = "shawnmendes98"; // la misma que usas en Escribir.jsx
 
 export default function EscribirPlaylist() {
   const [authorized, setAuthorized] = useState(false);
