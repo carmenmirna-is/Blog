@@ -103,19 +103,21 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Botón hamburguesa (solo móvil) */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen((v) => !v)}
-            className="lg:hidden"
-            aria-label="Abrir menú"
-          >
-            {mobileOpen ? (
-              <X className={scrolled ? "text-ink" : "text-cream"} />
-            ) : (
-              <Menu className={scrolled ? "text-ink" : "text-cream"} />
-            )}
-          </button>
+          {/* Toggle + hamburguesa (solo móvil) */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <ThemeToggle className={scrolled ? "text-ink" : "text-cream"} />
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label="Abrir menú"
+            >
+              {mobileOpen ? (
+                <X className={scrolled ? "text-ink" : "text-cream"} />
+              ) : (
+                <Menu className={scrolled ? "text-ink" : "text-cream"} />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
