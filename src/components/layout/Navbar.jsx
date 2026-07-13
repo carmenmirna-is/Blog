@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import useScrolled from "../../hooks/useScrolled";
 import { sections } from "../../data/sections";
-import ThemeToggle from "./ui/ThemeToggle";
+import ThemeToggle from "../ui/ThemeToggle";
 
 const primaryIds = ["biblioteca", "blog"];
 const primaryLinks = sections.filter((s) => primaryIds.includes(s.id));
