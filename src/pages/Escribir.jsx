@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
 
-const ADMIN_PASSWORD = "shawnmendes98"; // cámbiala por la tuya
+const ADMIN_PASSWORD = "tu-contraseña-secreta-aquí"; // la misma que ya tenías
 
 const writableSections = sections.filter((s) =>
   ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
@@ -12,7 +12,8 @@ const writableSections = sections.filter((s) =>
 export default function Escribir() {
   const [authorized, setAuthorized] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
-  const [status, setStatus] = useState(null); // null | "sending" | "success" | "error"
+  const [status, setStatus] = useState(null); // null | "uploading" | "sending" | "success" | "error"
+  const [file, setFile] = useState(null);
 
   const [form, setForm] = useState({
     section: "blog",
@@ -36,11 +37,57 @@ export default function Escribir() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0] ?? null);
+  };
+
+  // Devuelve 'image' | 'audio' | 'video' | null según el tipo real del archivo
+  const getMediaType = (f) => {
+    if (!f) return null;
+    if (f.type.startsWith("image/")) return "image";
+    if (f.type.startsWith("audio/")) return "audio";
+    if (f.type.startsWith("video/")) return "video";
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let media_url = null;
+    let media_type = null;
+
+    // 1. Si hay archivo, primero lo subimos al bucket
+    if (file) {
+      setStatus("uploading");
+
+      const fileExt = file.name.split(".").pop();
+      const filePath = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("post-media")
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error("Error al subir el archivo:", uploadError);
+        setStatus("error");
+        return;
+      }
+
+      // 2. Pedimos la URL pública del archivo recién subido
+      const { data: publicUrlData } = supabase.storage
+        .from("post-media")
+        .getPublicUrl(filePath);
+
+      media_url = publicUrlData.publicUrl;
+      media_type = getMediaType(file);
+    }
+
+    // 3. Ahora sí, guardamos el post completo (con o sin archivo)
     setStatus("sending");
 
-    const { error } = await supabase.from("posts").insert([form]);
+    const { error } = await supabase
+      .from("posts")
+      .insert([{ ...form, media_url, media_type }]);
 
     if (error) {
       console.error(error);
@@ -48,10 +95,10 @@ export default function Escribir() {
     } else {
       setStatus("success");
       setForm({ section: "blog", title: "", excerpt: "", content: "", tag: "", date_label: "" });
+      setFile(null);
     }
   };
 
-  // Pantalla de contraseña
   if (!authorized) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cream px-6">
@@ -78,7 +125,8 @@ export default function Escribir() {
     );
   }
 
-  // Formulario de escritura
+  const isBusy = status === "uploading" || status === "sending";
+
   return (
     <div className="min-h-screen bg-cream px-6 py-16">
       <div className="mx-auto max-w-2xl rounded-2xl bg-paper/80 p-8 shadow-petal">
@@ -168,12 +216,30 @@ export default function Escribir() {
             </div>
           </div>
 
+          {/* Campo nuevo: archivo adjunto */}
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-ink">
+              Foto, audio o video (opcional)
+            </label>
+            <input
+              type="file"
+              accept="image/*,audio/*,video/*"
+              onChange={handleFileChange}
+              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-sage/20 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-sage-deep"
+            />
+            {file && (
+              <p className="mt-1 text-xs text-ink-soft">Seleccionado: {file.name}</p>
+            )}
+          </div>
+
           <button
             type="submit"
-            disabled={status === "sending"}
+            disabled={isBusy}
             className="w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream disabled:opacity-50"
           >
-            {status === "sending" ? "Publicando…" : "Publicar entrada"}
+            {status === "uploading" && "Subiendo archivo…"}
+            {status === "sending" && "Publicando…"}
+            {!isBusy && "Publicar entrada"}
           </button>
         </form>
       </div>

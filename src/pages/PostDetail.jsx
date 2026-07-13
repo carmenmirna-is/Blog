@@ -62,9 +62,27 @@ export default function PostDetail() {
 
         <h1 className="font-display text-4xl font-semibold text-ink">{post.title}</h1>
 
-        <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-ink-soft">
-          {post.content}
-        </div>
+        {post.media_url && post.media_type === "image" && (
+          <img
+            src={post.media_url}
+            alt={post.title}
+            className="mt-8 w-full rounded-2xl shadow-petal"
+          />
+        )}
+
+        {post.media_url && post.media_type === "audio" && (
+          <audio controls className="mt-8 w-full">
+            <source src={post.media_url} />
+            Tu navegador no soporta audio.
+          </audio>
+        )}
+
+        {post.media_url && post.media_type === "video" && (
+          <video controls className="mt-8 w-full rounded-2xl shadow-petal">
+            <source src={post.media_url} />
+            Tu navegador no soporta video.
+          </video>
+        )}
       </div>
     </article>
   );
