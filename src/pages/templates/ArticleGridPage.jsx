@@ -44,7 +44,7 @@ export default function ArticleGridPage({ section }) {
               <Link
                 key={item.id}
                 to={`/entrada/${item.id}`}
-                className="block rounded-2xl border border-white/60 dark:border-none bg-paper/80 dark:glass-dark p-6 shadow-petal transition-transform duration-300 hover:-translate-y-1"
+                className="block rounded-2xl border border-white/60 dark:border-white/10 bg-paper/80 dark:bg-forest/60 dark:backdrop-blur-md p-6 shadow-petal transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="mb-3 flex items-center justify-between">
                   <span className="rounded-full bg-sage/15 dark:bg-sage/25 px-3 py-1 text-xs font-semibold text-sage-deep dark:text-sage-light">
