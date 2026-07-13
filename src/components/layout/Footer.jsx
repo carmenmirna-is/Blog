@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { Camera, Video, Lock } from "lucide-react";
 import { sections } from "../../data/sections";
-import { Lock } from "lucide-react";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const footerLinks = sections.filter((s) => s.id !== "inicio");
 
   return (
     <footer className="bg-forest px-6 py-14 text-cream shadow-petal-lg">
@@ -14,12 +15,32 @@ export default function Footer() {
             <p className="mt-2 max-w-xs text-sm text-cream/70">
               Un pequeño lugar donde compartir libros, ideas y café, con calma.
             </p>
+            <div className="mt-5 flex gap-3">
+              
+                href="#"
+                aria-label="Instagram"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-cream/20"
+              >
+                <Camera className="h-4 w-4" strokeWidth={1.75} />
+              </a>
+              
+                href="#"
+                aria-label="YouTube"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-cream/10 transition-colors hover:bg-cream/20"
+              >
+                <Video className="h-4 w-4" strokeWidth={1.75} />
+              </a>
+            </div>
           </div>
 
           <nav className="flex flex-wrap gap-4">
-            {sections.map((section) => (
-              <Link to="/panel" aria-label="Panel" className="text-cream/25 transition-colors hover:text-cream/60">
-                <Lock className="h-3.5 w-3.5" strokeWidth={1.75} />
+            {footerLinks.map((section) => (
+              <Link
+                key={section.id}
+                to={section.path}
+                className="text-sm text-cream/75 hover:text-cream"
+              >
+                {section.label}
               </Link>
             ))}
           </nav>
@@ -29,8 +50,12 @@ export default function Footer() {
           <p className="text-xs text-cream/60">
             © {year} El Rincón Encantado. Hecho con calma.
           </p>
-          <Link to="/panel" className="text-xs text-cream/30 transition-colors hover:text-cream/60">
-            ·
+          <Link
+            to="/panel"
+            aria-label="Panel"
+            className="text-cream/25 transition-colors hover:text-cream/60"
+          >
+            <Lock className="h-3.5 w-3.5" strokeWidth={1.75} />
           </Link>
         </div>
       </div>
