@@ -9,7 +9,7 @@ export default function SectionCard({ section, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.6, delay: index * 0.08 }}
-      className="rounded-2xl border border-white/60 bg-paper/80 p-6 shadow-petal transition-transform duration-300 hover:-translate-y-1"
+      className="rounded-2xl border-none bg-gradient-to-br from-rose-light/70 to-sage-light/70 p-6 shadow-petal-lg transition-transform duration-300 hover:-translate-y-1"
     >
       <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sage/20">
         <Icon className="h-5 w-5 text-sage-deep" strokeWidth={1.75} />
