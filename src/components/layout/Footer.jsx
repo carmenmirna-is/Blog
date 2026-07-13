@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { sections } from "../../data/sections";
+import { Lock } from "lucide-react";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -17,20 +18,21 @@ export default function Footer() {
 
           <nav className="flex flex-wrap gap-4">
             {sections.map((section) => (
-              <Link
-                key={section.id}
-                to={section.path}
-                className="text-sm text-cream/75 hover:text-cream"
-              >
-                {section.label}
+              <Link to="/panel" aria-label="Panel" className="text-cream/25 transition-colors hover:text-cream/60">
+                <Lock className="h-3.5 w-3.5" strokeWidth={1.75} />
               </Link>
             ))}
           </nav>
         </div>
 
-        <p className="mt-10 border-t border-cream/10 pt-6 text-xs text-cream/60">
-          © {year} El Rincón Encantado. Hecho con calma.
-        </p>
+        <div className="mt-10 flex flex-col items-center justify-between gap-2 border-t border-cream/10 pt-6 sm:flex-row">
+          <p className="text-xs text-cream/60">
+            © {year} El Rincón Encantado. Hecho con calma.
+          </p>
+          <Link to="/panel" className="text-xs text-cream/30 transition-colors hover:text-cream/60">
+            ·
+          </Link>
+        </div>
       </div>
     </footer>
   );

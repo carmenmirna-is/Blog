@@ -3,7 +3,26 @@ import { Link } from "react-router-dom";
 import { PenLine, Music2 } from "lucide-react";
 import { isAdminAuthorized, setAdminAuthorized } from "../lib/adminAuth";
 
-const ADMIN_PASSWORD = "tu-contraseña-secreta-aquí"; // la misma de siempre
+const ADMIN_PASSWORD = "shawnmendes98"; // la misma de siempre
+
+const options = [
+  {
+    to: "/escribir",
+    icon: PenLine,
+    tagline: "Nueve secciones te esperan",
+    title: "Escribir una entrada",
+    description: "Comparte un ensayo, una reseña, un capítulo de novela o cualquier reflexión.",
+    accent: "sage",
+  },
+  {
+    to: "/escribir-playlist",
+    icon: Music2,
+    tagline: "Sube un mp3 o pega un link",
+    title: "Agregar canción",
+    description: "Suma una canción a la playlist, subiendo tu propio audio o enlazando Spotify/YouTube.",
+    accent: "lavender",
+  },
+];
 
 export default function Panel() {
   const [authorized, setAuthorized] = useState(isAdminAuthorized());
@@ -46,29 +65,51 @@ export default function Panel() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-cream px-6">
-      <div className="w-full max-w-md rounded-2xl bg-paper/80 p-8 text-center shadow-petal">
-        <h1 className="mb-2 font-display text-2xl font-semibold text-ink">
+    <div className="flex min-h-screen items-center justify-center bg-cream px-6 py-32">
+      <div className="w-full max-w-3xl">
+        <h1 className="mb-2 text-center font-display text-3xl font-semibold text-ink">
           Panel de escritura
         </h1>
-        <p className="mb-8 text-sm text-ink-soft">¿Qué quieres hacer?</p>
+        <p className="mb-10 text-center text-sm text-ink-soft">¿Qué quieres hacer hoy?</p>
 
-        <div className="flex flex-col gap-4">
-          <Link
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <Link
             to="/escribir"
-            className="flex items-center justify-center gap-2 rounded-full bg-forest px-6 py-3 text-sm font-semibold text-cream transition-transform hover:scale-[1.02]"
-          >
-            <PenLine className="h-4 w-4" strokeWidth={1.75} />
-            Escribir una entrada
-          </Link>
+            className="group block rounded-2xl border border-white/60 bg-paper/80 p-7 shadow-petal transition-all duration-300 hover:-translate-y-1 hover:shadow-petal-lg"
+        >
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sage/20">
+            <PenLine className="h-5 w-5 text-sage-deep" strokeWidth={1.75} />
+            </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-sage-deep">
+            Nueve secciones te esperan
+            </p>
+            <h3 className="font-display text-2xl font-semibold text-ink">Escribir una entrada</h3>
+            <p className="mt-2 text-sm text-ink-soft">
+            Comparte un ensayo, una reseña, un capítulo de novela o cualquier reflexión.
+            </p>
+            <span className="mt-4 inline-block text-sm font-semibold text-forest opacity-0 transition-opacity group-hover:opacity-100">
+            Ir →
+            </span>
+        </Link>
 
-          <Link
+        <Link
             to="/escribir-playlist"
-            className="flex items-center justify-center gap-2 rounded-full bg-lavender-deep px-6 py-3 text-sm font-semibold text-cream transition-transform hover:scale-[1.02]"
-          >
-            <Music2 className="h-4 w-4" strokeWidth={1.75} />
-            Agregar canción a la playlist
-          </Link>
+            className="group block rounded-2xl border border-white/60 bg-paper/80 p-7 shadow-petal transition-all duration-300 hover:-translate-y-1 hover:shadow-petal-lg"
+        >
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-lavender/20">
+            <Music2 className="h-5 w-5 text-lavender-deep" strokeWidth={1.75} />
+            </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-lavender-deep">
+            Sube un mp3 o pega un link
+            </p>
+            <h3 className="font-display text-2xl font-semibold text-ink">Agregar canción</h3>
+            <p className="mt-2 text-sm text-ink-soft">
+            Suma una canción a la playlist, subiendo tu propio audio o enlazando Spotify/YouTube.
+            </p>
+            <span className="mt-4 inline-block text-sm font-semibold text-forest opacity-0 transition-opacity group-hover:opacity-100">
+            Ir →
+            </span>
+        </Link>
         </div>
       </div>
     </div>
