@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
 import useScrolled from "../../hooks/useScrolled";
 import { sections } from "../../data/sections";
+import ThemeToggle from "./ui/ThemeToggle";
 
 const primaryIds = ["biblioteca", "blog"];
 const primaryLinks = sections.filter((s) => primaryIds.includes(s.id));
@@ -92,12 +93,15 @@ export default function Navbar() {
             </NavLink>
           </nav>
 
-          <Link
-            to={contactLink.path}
-            className="hidden rounded-full bg-forest px-5 py-2 text-sm font-semibold text-cream lg:block"
-          >
-            Contacto
-          </Link>
+          <div className="hidden items-center gap-3 lg:flex">
+            <ThemeToggle />
+            <Link
+              to={contactLink.path}
+              className="rounded-full bg-forest px-5 py-2 text-sm font-semibold text-cream"
+            >
+              Contacto
+            </Link>
+          </div>
 
           {/* Botón hamburguesa (solo móvil) */}
           <button

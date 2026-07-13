@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Colores */
@@ -29,12 +30,20 @@
   /* Sombras — delicadas y cálidas, no grises genéricas */
   --shadow-petal: 0 8px 30px -8px rgba(90, 70, 50, 0.18);
   --shadow-petal-lg: 0 20px 60px -15px rgba(60, 45, 30, 0.25);
+
+  /*modo claro-oscuro*/
+  --color-night: #1C2418;
 }
 
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-body);
+}
+
+.dark body {
+  background-color: var(--color-night);
+  color: var(--color-cream);
 }
 
 /* Glassmorphism cálido — tres intensidades reutilizables */
