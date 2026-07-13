@@ -62,6 +62,12 @@ export default function PostDetail() {
 
         <h1 className="font-display text-4xl font-semibold text-ink">{post.title}</h1>
 
+        {/* Texto completo de la entrada */}
+        <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-ink-soft">
+          {post.content}
+        </div>
+
+        {/* Archivo adjunto (foto, audio o video), si existe */}
         {post.media_url && post.media_type === "image" && (
           <img
             src={post.media_url}
