@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Colores */
+  --color-cream: #FBF6ED;
+  --color-paper: #FFFDF8;
+  --color-sage: #94A582;
+  --color-sage-light: #C3D0B4;
+  --color-sage-deep: #556B4C;
+  --color-forest: #3E4F37;
+  --color-rose: #DDACA1;
+  --color-rose-light: #EFD3CB;
+  --color-lavender: #B8A7CC;
+  --color-lavender-light: #DDD2E9;
+  --color-wood: #8A6A48;
+  --color-ink: #3A322A;
+  --color-ink-soft: #6B6055;
+  --color-gold: #D9B25E;
+
+  /* Tipografía */
+  --font-display: "Cormorant Garamond", serif;
+  --font-body: "Nunito", sans-serif;
+
+  /* Radios */
+  --radius-cozy: 1.25rem;
+  --radius-cozy-lg: 2rem;
+
+  /* Sombras — delicadas y cálidas, no grises genéricas */
+  --shadow-petal: 0 8px 30px -8px rgba(90, 70, 50, 0.18);
+  --shadow-petal-lg: 0 20px 60px -15px rgba(60, 45, 30, 0.25);
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Glassmorphism cálido — tres intensidades reutilizables */
+.glass {
+  background: rgba(255, 253, 248, 0.55);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.glass-deep {
+  background: rgba(255, 253, 248, 0.8);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-dark {
+  background: rgba(62, 79, 55, 0.4);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}

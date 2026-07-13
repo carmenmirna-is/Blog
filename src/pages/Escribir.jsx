@@ -1,0 +1,182 @@
+import { useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { sections } from "../data/sections";
+
+const ADMIN_PASSWORD = "shawnmendes98"; // cámbiala por la tuya
+
+const writableSections = sections.filter((s) =>
+  ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
+   "investigacion", "proyecto-cafeteria", "novelas", "poemas"].includes(s.id)
+);
+
+export default function Escribir() {
+  const [authorized, setAuthorized] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [status, setStatus] = useState(null); // null | "sending" | "success" | "error"
+
+  const [form, setForm] = useState({
+    section: "blog",
+    title: "",
+    excerpt: "",
+    content: "",
+    tag: "",
+    date_label: "",
+  });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (passwordInput === ADMIN_PASSWORD) {
+      setAuthorized(true);
+    } else {
+      alert("Contraseña incorrecta");
+    }
+  };
+
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    const { error } = await supabase.from("posts").insert([form]);
+
+    if (error) {
+      console.error(error);
+      setStatus("error");
+    } else {
+      setStatus("success");
+      setForm({ section: "blog", title: "", excerpt: "", content: "", tag: "", date_label: "" });
+    }
+  };
+
+  // Pantalla de contraseña
+  if (!authorized) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-cream px-6">
+        <form onSubmit={handleLogin} className="w-full max-w-sm rounded-2xl bg-paper/80 p-8 shadow-petal">
+          <h1 className="mb-4 text-center font-display text-2xl font-semibold text-ink">
+            Acceso privado
+          </h1>
+          <input
+            type="password"
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+            placeholder="Contraseña"
+            className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            autoFocus
+          />
+          <button
+            type="submit"
+            className="mt-4 w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream"
+          >
+            Entrar
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // Formulario de escritura
+  return (
+    <div className="min-h-screen bg-cream px-6 py-16">
+      <div className="mx-auto max-w-2xl rounded-2xl bg-paper/80 p-8 shadow-petal">
+        <h1 className="mb-6 font-display text-2xl font-semibold text-ink">
+          Escribir nueva entrada
+        </h1>
+
+        {status === "success" && (
+          <p className="mb-4 rounded-lg bg-sage/15 px-4 py-3 text-sm text-sage-deep">
+            ¡Entrada publicada! Ya puedes verla en su sección.
+          </p>
+        )}
+        {status === "error" && (
+          <p className="mb-4 rounded-lg bg-rose/15 px-4 py-3 text-sm text-rose-deep">
+            Hubo un error al publicar. Revisa la consola (F12).
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-ink">Sección</label>
+            <select
+              name="section"
+              value={form.section}
+              onChange={handleChange}
+              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            >
+              {writableSections.map((s) => (
+                <option key={s.id} value={s.id}>{s.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-ink">Título</label>
+            <input
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-ink">Extracto (resumen corto)</label>
+            <textarea
+              name="excerpt"
+              value={form.excerpt}
+              onChange={handleChange}
+              rows={2}
+              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-semibold text-ink">Contenido completo</label>
+            <textarea
+              name="content"
+              value={form.content}
+              onChange={handleChange}
+              rows={8}
+              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-ink">Etiqueta</label>
+              <input
+                name="tag"
+                value={form.tag}
+                onChange={handleChange}
+                placeholder="Ensayo, Reseña…"
+                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-ink">Fecha a mostrar</label>
+              <input
+                name="date_label"
+                value={form.date_label}
+                onChange={handleChange}
+                placeholder="Jul 2026"
+                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream disabled:opacity-50"
+          >
+            {status === "sending" ? "Publicando…" : "Publicar entrada"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
