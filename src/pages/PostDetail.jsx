@@ -29,14 +29,14 @@ export default function PostDetail() {
   }, [id]);
 
   if (loading) {
-    return <p className="min-h-screen bg-cream pt-40 text-center text-ink-soft">Cargando…</p>;
+    return <p className="min-h-screen bg-cream dark:bg-night pt-40 text-center text-ink-soft dark:text-cream/70">Cargando…</p>;
   }
 
   if (!post) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-cream px-6 text-center">
-        <p className="text-ink-soft">No encontramos esta entrada.</p>
-        <Link to="/" className="mt-4 font-semibold text-forest">Volver al inicio</Link>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-cream dark:bg-night px-6 text-center">
+        <p className="text-ink-soft dark:text-cream/70">No encontramos esta entrada.</p>
+        <Link to="/" className="mt-4 font-semibold text-forest dark:text-sage-light">Volver al inicio</Link>
       </div>
     );
   }
@@ -44,26 +44,26 @@ export default function PostDetail() {
   const section = sections.find((s) => s.id === post.section);
 
   return (
-    <article className="min-h-screen bg-cream px-6 pt-32 pb-20">
+    <article className="min-h-screen bg-cream dark:bg-night px-6 pt-32 pb-20">
       <div className="mx-auto max-w-2xl">
         <Link
           to={section ? section.path : "/"}
-          className="mb-6 inline-block text-sm font-semibold text-sage-deep"
+          className="mb-6 inline-block text-sm font-semibold text-sage-deep dark:text-sage-light"
         >
           ← Volver a {section ? section.label : "Inicio"}
         </Link>
 
         <div className="mb-3 flex items-center gap-3">
-          <span className="rounded-full bg-sage/15 px-3 py-1 text-xs font-semibold text-sage-deep">
+          <span className="rounded-full bg-sage/15 dark:bg-sage/25 px-3 py-1 text-xs font-semibold text-sage-deep dark:text-sage-light">
             {post.tag}
           </span>
-          <span className="text-xs text-ink-soft">{post.date_label}</span>
+          <span className="text-xs text-ink-soft dark:text-cream/60">{post.date_label}</span>
         </div>
 
-        <h1 className="font-display text-4xl font-semibold text-ink">{post.title}</h1>
+        <h1 className="font-display text-4xl font-semibold text-ink dark:text-cream">{post.title}</h1>
 
         {/* Texto completo de la entrada */}
-        <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-ink-soft">
+        <div className="mt-6 whitespace-pre-line text-base leading-relaxed text-ink-soft dark:text-cream/80">
           {post.content}
         </div>
 
