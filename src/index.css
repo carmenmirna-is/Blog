@@ -35,6 +35,16 @@
   --color-night: #1C2418;
 }
 
+/* Le dice al navegador qué estilo "nativo" usar en inputs, scrollbars, etc.,
+   según el modo activo — así los inputs nunca quedan con texto invisible */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);

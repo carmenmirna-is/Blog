@@ -14,7 +14,7 @@ export default function EscribirPlaylist() {
     artist: "",
     mood: "",
     source_type: "upload",
-    media_url: "", // se usa solo si source_type es spotify o youtube
+    media_url: "",
   });
 
   const handleLogin = (e) => {
@@ -31,8 +31,6 @@ export default function EscribirPlaylist() {
     e.preventDefault();
     let finalMediaUrl = form.media_url;
 
-    // Si el origen es "upload", el link real viene del archivo subido,
-    // no de lo que haya escrito en el campo de texto
     if (form.source_type === "upload") {
       if (!file) {
         alert("Selecciona un archivo de audio");
@@ -83,7 +81,7 @@ export default function EscribirPlaylist() {
             value={passwordInput}
             onChange={(e) => setPasswordInput(e.target.value)}
             placeholder="Contraseña"
-            className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             autoFocus
           />
           <button type="submit" className="mt-4 w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream">
@@ -122,7 +120,7 @@ export default function EscribirPlaylist() {
               value={form.title}
               onChange={handleChange}
               required
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
@@ -132,7 +130,7 @@ export default function EscribirPlaylist() {
               name="artist"
               value={form.artist}
               onChange={handleChange}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
@@ -143,7 +141,7 @@ export default function EscribirPlaylist() {
               value={form.mood}
               onChange={handleChange}
               placeholder="Para leer, para escribir…"
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
@@ -153,7 +151,7 @@ export default function EscribirPlaylist() {
               name="source_type"
               value={form.source_type}
               onChange={handleChange}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             >
               <option value="upload">Subir mi propio archivo de audio</option>
               <option value="spotify">Link de Spotify</option>
@@ -168,8 +166,9 @@ export default function EscribirPlaylist() {
                 type="file"
                 accept="audio/*"
                 onChange={(e) => setFile(e.target.files[0] ?? null)}
-                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-sage/20 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-sage-deep"
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink file:mr-3 file:rounded-full file:border-0 file:bg-sage/20 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-sage-deep"
               />
+              {file && <p className="mt-1 text-xs text-ink-soft">Seleccionado: {file.name}</p>}
             </div>
           ) : (
             <div>
@@ -186,7 +185,7 @@ export default function EscribirPlaylist() {
                     ? "https://open.spotify.com/track/..."
                     : "https://www.youtube.com/watch?v=..."
                 }
-                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
               />
             </div>
           )}
