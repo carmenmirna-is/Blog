@@ -37,14 +37,14 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-3" : "py-6"
+        scrolled ? "pt-4 pb-3" : "py-6"
       }`}
     >
       <div className="mx-auto max-w-6xl px-6">
         <div
           className={`flex items-center justify-between rounded-full px-5 py-3 transition-all duration-500 ${
-            scrolled ? "glass shadow-petal" : "bg-transparent"
-          }`}
+          scrolled ? "glass-deep shadow-petal-lg" : "bg-transparent"
+        }`}
         >
           <Link
             to="/"
