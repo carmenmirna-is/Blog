@@ -86,32 +86,7 @@ export default function Escribir() {
       setFile(null);
     }
   };
-
-  if (!authorized) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-cream px-6">
-        <form onSubmit={handleLogin} className="w-full max-w-sm rounded-2xl bg-paper/80 p-8 shadow-petal">
-          <h1 className="mb-4 text-center font-display text-2xl font-semibold text-ink">
-            Acceso privado
-          </h1>
-          <input
-            type="password"
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-            placeholder="Contraseña"
-            className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
-            autoFocus
-          />
-          <button
-            type="submit"
-            className="mt-4 w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream"
-          >
-            Entrar
-          </button>
-        </form>
-      </div>
-    );
-  }
+}
 
   const isBusy = status === "uploading" || status === "sending";
 
@@ -233,4 +208,3 @@ export default function Escribir() {
       </div>
     </div>
   );
-}
