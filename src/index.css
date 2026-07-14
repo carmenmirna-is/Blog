@@ -130,3 +130,45 @@ body::after {
 .dark .capitular::first-letter {
   color: var(--color-sage-light);
 }
+
+/* ============================================================
+   MICROINTERACCIONES — links con subrayado que crece al hover
+   ============================================================ */
+
+.link-underline {
+  position: relative;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.35s ease;
+}
+
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* ============================================================
+   BOTÓN PRINCIPAL — un solo lugar para el estilo del botón
+   de acción principal en todo el sitio
+   ============================================================ */
+
+.btn-primary {
+  background-color: var(--color-forest);
+  color: var(--color-cream);
+  border-radius: 9999px;
+  font-weight: 600;
+  box-shadow: var(--shadow-petal);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-petal-lg);
+  transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

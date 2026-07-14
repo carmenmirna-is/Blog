@@ -56,7 +56,11 @@ export default function Navbar() {
           {/* Nav desktop */}
           <nav className="hidden items-center gap-6 lg:flex">
             {primaryLinks.map((s) => (
-              <NavLink key={s.id} to={s.path} className={`text-sm font-semibold ${linkColor}`}>
+              <NavLink
+                key={s.id}
+                to={s.path}
+                className={`link-underline text-sm font-semibold ${linkColor}`}
+              >
                 {s.label}
               </NavLink>
             ))}
@@ -66,7 +70,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setMoreOpen((v) => !v)}
-                className={`flex items-center gap-1 text-sm font-semibold ${linkColor}`}
+                className={`link-underline flex items-center gap-1 text-sm font-semibold ${linkColor}`}
               >
                 Explorar
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
@@ -79,7 +83,7 @@ export default function Navbar() {
                       key={s.id}
                       to={s.path}
                       onClick={() => setMoreOpen(false)}
-                      className="rounded-lg px-3 py-2 text-sm text-ink hover:bg-sage/15"
+                      className="link-underline rounded-lg px-3 py-2 text-sm text-ink hover:bg-sage/15"
                     >
                       {s.label}
                     </Link>
@@ -88,7 +92,10 @@ export default function Navbar() {
               )}
             </div>
 
-            <NavLink to={aboutLink.path} className={`text-sm font-semibold ${linkColor}`}>
+            <NavLink
+              to={aboutLink.path}
+              className={`link-underline text-sm font-semibold ${linkColor}`}
+            >
               {aboutLink.label}
             </NavLink>
           </nav>
@@ -97,7 +104,7 @@ export default function Navbar() {
             <ThemeToggle className={linkColor} />
             <Link
               to={contactLink.path}
-              className="rounded-full bg-forest px-5 py-2 text-sm font-semibold text-cream"
+              className="btn-primary px-5 py-2 text-sm"
             >
               Contacto
             </Link>
@@ -130,7 +137,7 @@ export default function Navbar() {
                 key={s.id}
                 to={s.path}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-ink hover:bg-sage/15"
+                className="link-underline rounded-lg px-3 py-2.5 text-sm font-medium text-ink hover:bg-sage/15"
               >
                 {s.label}
               </Link>

@@ -18,6 +18,9 @@ export default function SobreMi() {
             desde hace bastante tiempo. Este sitio es el lugar donde esas
             partes conviven sin tener que elegir una sola.
           </p>
+          <div className="mt-8 flex justify-center">
+            <CafeCorner />
+          </div>
         </div>
       </section>
     </>

@@ -160,7 +160,7 @@ export default function EscribirPlaylist() {
           <button
             type="submit"
             disabled={isBusy}
-            className="w-full rounded-full bg-forest px-6 py-2.5 text-sm font-semibold text-cream disabled:opacity-50"
+            className="btn-primary w-full px-6 py-2.5 text-sm"
           >
             {status === "uploading" && "Subiendo audio…"}
             {status === "sending" && "Guardando…"}

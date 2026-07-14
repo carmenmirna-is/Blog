@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Camera, Video, Lock } from "lucide-react";
 import { sections } from "../../data/sections";
+import CafeCorner from "../ui/CafeCorner";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -12,6 +13,7 @@ export default function Footer() {
         <div className="flex flex-wrap gap-8">
           <div className="mr-auto">
             <p className="font-display text-xl font-semibold">El Rincón Encantado</p>
+            <CafeCorner className="mt-4" />
             <p className="mt-2 max-w-xs text-sm text-cream/70">
               Un pequeño lugar donde compartir libros, ideas y café, con calma.
             </p>
