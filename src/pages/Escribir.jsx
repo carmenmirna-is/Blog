@@ -86,7 +86,6 @@ export default function Escribir() {
       setFile(null);
     }
   };
-}
 
   const isBusy = status === "uploading" || status === "sending";
 
@@ -208,3 +207,4 @@ export default function Escribir() {
       </div>
     </div>
   );
+}
