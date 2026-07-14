@@ -22,6 +22,7 @@ import PostDetail from "./pages/PostDetail";
 import EscribirPlaylist from "./pages/EscribirPlaylist";
 import Panel from "./pages/Panel";
 import MiniPlayer from "./components/layout/MiniPlayer";
+import ScrollParticles from "./components/layout/ScrollParticles";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
       </Routes>
       <Footer />
       <MiniPlayer />
+      <ScrollParticles />
     </>
   );
 }
