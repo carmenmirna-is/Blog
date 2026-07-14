@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
-import { isAdminAuthorized, setAdminAuthorized } from "../lib/adminAuth";
 
-const ADMIN_PASSWORD = "shawnmendes98"; // la misma que ya tenías
 
 const writableSections = sections.filter((s) =>
   ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
@@ -11,8 +9,6 @@ const writableSections = sections.filter((s) =>
 );
 
 export default function Escribir() {
-  const [authorized, setAuthorized] = useState(isAdminAuthorized());
-  const [passwordInput, setPasswordInput] = useState("");
   const [status, setStatus] = useState(null); // null | "uploading" | "sending" | "success" | "error"
   const [file, setFile] = useState(null);
 
@@ -24,16 +20,6 @@ export default function Escribir() {
     tag: "",
     date_label: "",
   });
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (passwordInput === ADMIN_PASSWORD) {
-      setAdminAuthorized();
-      setAuthorized(true);
-    } else {
-      alert("Contraseña incorrecta");
-    }
-  };
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
