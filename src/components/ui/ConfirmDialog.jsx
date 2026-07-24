@@ -50,7 +50,8 @@ export default function ConfirmDialog({ open, title, message, onConfirm, onCance
               <button
                 type="button"
                 onClick={onConfirm}
-                className="rounded-full bg-rose-deep px-5 py-2 font-body text-sm font-semibold text-cream transition hover:opacity-90"
+                style={{ backgroundColor: "var(--color-rose-deep, #B87F72)" }}
+                className="rounded-full px-5 py-2 font-body text-sm font-semibold text-cream transition hover:opacity-90"
               >
                 Eliminar
               </button>
