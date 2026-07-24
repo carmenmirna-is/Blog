@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
+import { useAdminSession } from "../hooks/useAdminSession";
 import Divider from "../components/ui/Divider";
 
 export default function PostDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
+  const { isAdmin } = useAdminSession();
 
   useEffect(() => {
     async function fetchPost() {
@@ -24,6 +29,23 @@ export default function PostDetail() {
     }
     fetchPost();
   }, [id]);
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(`¿Eliminar "${post.title}"? Esta acción no se puede deshacer.`);
+    if (!confirmed) return;
+
+    setDeleting(true);
+    const { error } = await supabase.from("posts").delete().eq("id", post.id);
+
+    if (error) {
+      console.error(error);
+      alert("No se pudo eliminar la entrada. Revisa la consola.");
+      setDeleting(false);
+    } else {
+      const section = sections.find((s) => s.id === post.section);
+      navigate(section ? section.path : "/");
+    }
+  };
 
   if (loading) {
     return (
@@ -46,9 +68,6 @@ export default function PostDetail() {
 
   const section = sections.find((s) => s.id === post.section);
 
-  // Partimos el texto en párrafos reales (separados por línea en blanco),
-  // para poder darle a cada uno su propio espaciado y aplicar la
-  // capitular solo al primero.
   const paragraphs = (post.content ?? "")
     .split(/\n{2,}/)
     .map((p) => p.trim())
@@ -56,15 +75,36 @@ export default function PostDetail() {
 
   return (
     <article className="min-h-screen bg-cream px-6 pb-24 pt-32 dark:bg-night sm:pt-40">
-      {/* Ancho cómodo de lectura: ~65 caracteres por línea, el estándar
-          editorial para no cansar la vista */}
       <div className="mx-auto max-w-[42rem]">
-        <Link
-          to={section ? section.path : "/"}
-          className="mb-8 inline-block font-body text-sm font-semibold text-sage-deep transition-colors hover:text-forest dark:text-sage-light"
-        >
-          ← Volver a {section ? section.label : "Inicio"}
-        </Link>
+        <div className="mb-8 flex items-center justify-between">
+          <Link
+            to={section ? section.path : "/"}
+            className="link-underline font-body text-sm font-semibold text-sage-deep hover:text-forest dark:text-sage-light"
+          >
+            ← Volver a {section ? section.label : "Inicio"}
+          </Link>
+
+          {isAdmin && (
+            <div className="flex items-center gap-2">
+              <Link
+                to={`/editar-entrada/${post.id}`}
+                aria-label="Editar entrada"
+                className="rounded-full p-2 text-ink-soft/60 transition hover:bg-sage/15 hover:text-sage-deep dark:text-cream/40 dark:hover:bg-sage/10"
+              >
+                <Pencil className="h-4 w-4" strokeWidth={1.75} />
+              </Link>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                aria-label="Eliminar entrada"
+                className="rounded-full p-2 text-ink-soft/60 transition hover:bg-rose/15 hover:text-rose-deep disabled:opacity-50 dark:text-cream/40"
+              >
+                <Trash2 className="h-4 w-4" strokeWidth={1.75} />
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="mb-4 flex items-center gap-3">
           <span className="rounded-full bg-sage/15 px-3 py-1 font-body text-xs font-semibold text-sage-deep dark:bg-sage/10 dark:text-sage-light">
@@ -81,34 +121,23 @@ export default function PostDetail() {
 
         <Divider symbol="✦" />
 
-        {/* Cuerpo del texto, tipo novela: centrado, ancho cómodo,
-            párrafos bien separados, capitular en el primero */}
         <div className="font-body text-lg text-ink-soft dark:text-cream/80">
           {paragraphs.map((para, i) => (
-            <p
-              key={i}
-              className={`mb-7 ${i === 0 ? "capitular" : ""}`}
-            >
+            <p key={i} className={`mb-7 ${i === 0 ? "capitular" : ""}`}>
               {para}
             </p>
           ))}
         </div>
 
         {post.media_url && post.media_type === "image" && (
-          <img
-            src={post.media_url}
-            alt={post.title}
-            className="mt-10 w-full rounded-2xl shadow-petal"
-          />
+          <img src={post.media_url} alt={post.title} className="mt-10 w-full rounded-2xl shadow-petal" />
         )}
-
         {post.media_url && post.media_type === "audio" && (
           <audio controls className="mt-10 w-full">
             <source src={post.media_url} />
             Tu navegador no soporta audio.
           </audio>
         )}
-
         {post.media_url && post.media_type === "video" && (
           <video controls className="mt-10 w-full rounded-2xl shadow-petal">
             <source src={post.media_url} />

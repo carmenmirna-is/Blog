@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
-
+import EditarEntrada from "./pages/EditarEntrada";
 import Home from "./pages/Home";
 import Biblioteca from "./pages/Biblioteca";
 import Blog from "./pages/Blog";
@@ -47,6 +47,7 @@ function App() {
         <Route path="/escribir" element={<Escribir />} />
         <Route path="/entrada/:id" element={<PostDetail />} />
         <Route path="/escribir-playlist" element={<EscribirPlaylist />} />
+        <Route path="/editar-entrada/:id" element={<EditarEntrada />} />
         <Route path="/panel" element={<Panel />} />
       </Routes>
       <Footer />
