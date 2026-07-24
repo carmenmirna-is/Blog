@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { PenLine, Music2 } from "lucide-react";
+import { PenLine, Music2, Sprout, PawPrint } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 
 export default function Panel() {
@@ -172,9 +172,51 @@ export default function Panel() {
 
             <p className="mt-2 text-sm text-ink-soft">
               Suma una canción a la playlist, subiendo tu propio audio o enlazando
-              Spotify o YouTube.
+              YouTube.
             </p>
 
+            <span className="mt-4 inline-block text-sm font-semibold text-forest opacity-0 transition-opacity group-hover:opacity-100">
+              Ir →
+            </span>
+          </Link>
+
+          <Link
+            to="/escribir-diario"
+            className="group block rounded-2xl border border-white/60 bg-paper/80 p-7 shadow-petal transition-all duration-300 hover:-translate-y-1 hover:shadow-petal-lg"
+          >
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/15">
+              <Sprout className="h-5 w-5 text-wood" strokeWidth={1.75} />
+            </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-wood">
+              Público o privado
+            </p>
+            <h3 className="font-display text-2xl font-semibold text-ink">
+              Escribir en el diario
+            </h3>
+            <p className="mt-2 text-sm text-ink-soft">
+              Anota una entrada breve, y decide si la comparte el mundo o solo tú.
+            </p>
+            <span className="mt-4 inline-block text-sm font-semibold text-forest opacity-0 transition-opacity group-hover:opacity-100">
+              Ir →
+            </span>
+          </Link>
+
+          <Link
+            to="/escribir-perro"
+            className="group block rounded-2xl border border-white/60 bg-paper/80 p-7 shadow-petal transition-all duration-300 hover:-translate-y-1 hover:shadow-petal-lg"
+          >
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-wood/15">
+              <PawPrint className="h-5 w-5 text-wood" strokeWidth={1.75} />
+            </div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-wood">
+              La compañía de siempre
+            </p>
+            <h3 className="font-display text-2xl font-semibold text-ink">
+              Agregar un perrito
+            </h3>
+            <p className="mt-2 text-sm text-ink-soft">
+              Comparte el nombre, raza y personalidad de tu compañía de cuatro patas.
+            </p>
             <span className="mt-4 inline-block text-sm font-semibold text-forest opacity-0 transition-opacity group-hover:opacity-100">
               Ir →
             </span>

@@ -22,6 +22,8 @@ import PostDetail from "./pages/PostDetail";
 import EscribirPlaylist from "./pages/EscribirPlaylist";
 import Panel from "./pages/Panel";
 import MiniPlayer from "./components/layout/MiniPlayer";
+import EscribirDiario from "./pages/EscribirDiario";
+import EscribirPerro from "./pages/EscribirPerro";
 import ScrollParticles from "./components/layout/ScrollParticles";
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
         <Route path="/entrada/:id" element={<PostDetail />} />
         <Route path="/escribir-playlist" element={<EscribirPlaylist />} />
         <Route path="/editar-entrada/:id" element={<EditarEntrada />} />
+        <Route path="/escribir-diario" element={<EscribirDiario />} />
+        <Route path="/escribir-perro" element={<EscribirPerro />} />
         <Route path="/panel" element={<Panel />} />
       </Routes>
       <Footer />
