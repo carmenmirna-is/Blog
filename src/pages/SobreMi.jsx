@@ -1,3 +1,4 @@
+import CafeCorner from "../components/ui/CafeCorner";
 import PageHeader from "../components/layout/PageHeader";
 import { sections } from "../data/sections";
 
