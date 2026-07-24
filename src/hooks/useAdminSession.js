@@ -1,22 +1,39 @@
 import { useEffect, useState } from "react";
-import { isAdminAuthorized } from "../lib/adminAuth";
+import { supabase } from "../lib/supabaseClient";
 
 /**
- * Hook simple que expone si la sesión actual del navegador ya pasó
- * por la contraseña del Panel (ver lib/adminAuth.js). Se usa en
- * cualquier página pública donde, si eres tú, quieras ver controles
- * extra (como el botón de eliminar en Playlist).
+ * Expone si hay una sesión real de Supabase Auth activa (el mismo
+ * sistema que usa Panel.jsx con correo + contraseña). A diferencia
+ * de la versión anterior (que miraba sessionStorage), esta consulta
+ * la sesión de verdad y se actualiza sola en cuanto el usuario
+ * inicia o cierra sesión, sin depender de recargar la página.
  */
 export function useAdminSession() {
-  const [isAdmin, setIsAdmin] = useState(isAdminAuthorized());
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Por si el usuario entra al Panel en otra pestaña mientras esta
-    // sigue abierta, revisamos de nuevo al reenfocar la ventana.
-    const recheck = () => setIsAdmin(isAdminAuthorized());
-    window.addEventListener("focus", recheck);
-    return () => window.removeEventListener("focus", recheck);
+    let mounted = true;
+
+    // Revisa si ya hay una sesión activa al cargar el componente
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (mounted) {
+        setIsAdmin(!!session);
+        setLoading(false);
+      }
+    });
+
+    // Se suscribe a cambios de sesión (login/logout) en tiempo real,
+    // así cualquier página que use este hook se entera al instante
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAdmin(!!session);
+    });
+
+    return () => {
+      mounted = false;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
-  return { isAdmin };
+  return { isAdmin, loading };
 }
