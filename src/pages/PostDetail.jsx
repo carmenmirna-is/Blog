@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
 import { useAdminSession } from "../hooks/useAdminSession";
 import Divider from "../components/ui/Divider";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 
 export default function PostDetail() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function PostDetail() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const { isAdmin } = useAdminSession();
 
   useEffect(() => {
@@ -31,9 +33,7 @@ export default function PostDetail() {
   }, [id]);
 
   const handleDelete = async () => {
-    const confirmed = window.confirm(`¿Eliminar "${post.title}"? Esta acción no se puede deshacer.`);
-    if (!confirmed) return;
-
+    setConfirmOpen(false);
     setDeleting(true);
     const { error } = await supabase.from("posts").delete().eq("id", post.id);
 
@@ -95,7 +95,7 @@ export default function PostDetail() {
               </Link>
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={() => setConfirmOpen(true)}
                 disabled={deleting}
                 aria-label="Eliminar entrada"
                 className="rounded-full p-2 text-ink-soft/60 transition hover:bg-rose/15 hover:text-rose-deep disabled:opacity-50 dark:text-cream/40"
@@ -145,6 +145,14 @@ export default function PostDetail() {
           </video>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="¿Eliminar esta entrada?"
+        message={`Se eliminará "${post.title}". Esta acción no se puede deshacer.`}
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </article>
   );
 }

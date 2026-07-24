@@ -5,6 +5,7 @@ import { supabase } from "../lib/supabaseClient";
 import { sections } from "../data/sections";
 import { usePlayer } from "../context/PlayerContext";
 import { useAdminSession } from "../hooks/useAdminSession";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 
 export default function Playlist() {
   const section = sections.find((s) => s.id === "playlist");
@@ -13,6 +14,7 @@ export default function Playlist() {
   const [deletingId, setDeletingId] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ title: "", artist: "", mood: "" });
+  const [trackToDelete, setTrackToDelete] = useState(null);
   const { currentTrack, playTrack } = usePlayer();
   const { isAdmin } = useAdminSession();
 
@@ -30,11 +32,15 @@ export default function Playlist() {
     fetchTracks();
   }, []);
 
-  const handleDelete = async (track) => {
-    const confirmed = window.confirm(`¿Eliminar "${track.title}" de la playlist?`);
-    if (!confirmed) return;
+  const confirmDelete = (track) => {
+    setTrackToDelete(track);
+  };
 
+  const executeDelete = async () => {
+    const track = trackToDelete;
+    setTrackToDelete(null);
     setDeletingId(track.id);
+
     const { error } = await supabase.from("playlist_tracks").delete().eq("id", track.id);
 
     if (error) {
@@ -172,7 +178,7 @@ export default function Playlist() {
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleDelete(track)}
+                            onClick={() => confirmDelete(track)}
                             disabled={deletingId === track.id}
                             aria-label="Eliminar canción"
                             className="rounded-full p-1.5 text-ink-soft/60 transition hover:bg-rose/15 hover:text-rose-deep disabled:opacity-50"
@@ -189,6 +195,14 @@ export default function Playlist() {
           )}
         </div>
       </section>
+
+      <ConfirmDialog
+        open={!!trackToDelete}
+        title="¿Eliminar esta canción?"
+        message={trackToDelete ? `Se eliminará "${trackToDelete.title}" de la playlist. No se puede deshacer.` : ""}
+        onConfirm={executeDelete}
+        onCancel={() => setTrackToDelete(null)}
+      />
     </>
   );
 }
