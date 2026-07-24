@@ -121,7 +121,6 @@ export default function EscribirPlaylist() {
               className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             >
               <option value="upload">Subir mi propio archivo de audio</option>
-              <option value="spotify">Link de Spotify</option>
               <option value="youtube">Link de YouTube</option>
             </select>
           </div>
@@ -140,18 +139,14 @@ export default function EscribirPlaylist() {
           ) : (
             <div>
               <label className="mb-1 block text-sm font-semibold text-ink">
-                Pega el link de {form.source_type === "spotify" ? "Spotify" : "YouTube"}
+                Pega el link de YouTube
               </label>
               <input
                 name="media_url"
                 value={form.media_url}
                 onChange={handleChange}
                 required
-                placeholder={
-                  form.source_type === "spotify"
-                    ? "https://open.spotify.com/track/..."
-                    : "https://www.youtube.com/watch?v=..."
-                }
+                placeholder="https://www.youtube.com/watch?v=..."
                 className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
               />
             </div>

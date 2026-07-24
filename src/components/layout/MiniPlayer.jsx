@@ -11,7 +11,7 @@ function getYouTubeEmbedUrl(url) {
   const watchMatch = url.match(/[?&]v=([^&]+)/);
   const shortMatch = url.match(/youtu\.be\/([^?&]+)/);
   const id = watchMatch ? watchMatch[1] : shortMatch ? shortMatch[1] : null;
-  return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : null;
+  return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1` : null;
 }
 
 // Convierte segundos (137.4) a formato "2:17"
@@ -192,26 +192,18 @@ export default function MiniPlayer() {
           </div>
         )}
 
-        {currentTrack.source_type === "spotify" && getSpotifyEmbedUrl(currentTrack.media_url) && (
-          <iframe
-            src={getSpotifyEmbedUrl(currentTrack.media_url)}
-            width="100%"
-            height="80"
-            frameBorder="0"
-            allow="encrypted-media; autoplay"
-            title={currentTrack.title}
-          />
-        )}
-
         {currentTrack.source_type === "youtube" && getYouTubeEmbedUrl(currentTrack.media_url) && (
-          <iframe
-            src={getYouTubeEmbedUrl(currentTrack.media_url)}
-            width="100%"
-            height="80"
-            frameBorder="0"
-            allow="encrypted-media; autoplay; picture-in-picture"
-            title={currentTrack.title}
-          />
+          <div className="overflow-hidden rounded-xl">
+            <iframe
+              src={getYouTubeEmbedUrl(currentTrack.media_url)}
+              width="100%"
+              height="70"
+              frameBorder="0"
+              allow="encrypted-media; autoplay; picture-in-picture"
+              title={currentTrack.title}
+              className="block"
+            />
+          </div>
         )}
       </div>
     </div>
