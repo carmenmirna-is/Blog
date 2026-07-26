@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-import { sections } from "../data/sections";
 import { useAdminSession } from "../hooks/useAdminSession";
 
-const writableSections = sections.filter((s) =>
-  ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
-   "investigacion", "proyecto-cafeteria", "novelas", "poemas"].includes(s.id)
-);
+const writableOptions = [
+  { value: "biblioteca", label: "Biblioteca" },
+  { value: "blog", label: "Blog" },
+];
+
+const blogCategories = [
+  "Personal",
+  "Mi Carrera",
+  "Sociedad",
+  "Investigación",
+  "Proyecto Cafetería",
+  "Novelas",
+  "Poemas",
+];
 
 export default function EditarEntrada() {
   const { id } = useParams();
@@ -40,6 +49,7 @@ export default function EditarEntrada() {
       .from("posts")
       .update({
         section: form.section,
+        category: form.section === "blog" ? form.category : null,
         title: form.title,
         excerpt: form.excerpt,
         content: form.content,
@@ -93,11 +103,27 @@ export default function EditarEntrada() {
               onChange={handleChange}
               className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             >
-              {writableSections.map((s) => (
-                <option key={s.id} value={s.id}>{s.label}</option>
+              {writableOptions.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
               ))}
             </select>
           </div>
+
+          {form.section === "blog" && (
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Categoría</label>
+              <select
+                name="category"
+                value={form.category ?? "Personal"}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
+              >
+                {blogCategories.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div>
             <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Título</label>

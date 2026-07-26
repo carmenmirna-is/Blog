@@ -1,34 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import useScrolled from "../../hooks/useScrolled";
 import { sections } from "../../data/sections";
 import ThemeToggle from "../ui/ThemeToggle";
 
-const primaryIds = ["biblioteca", "blog"];
+const primaryIds = ["biblioteca", "blog", "playlist", "diario", "mis-perros"];
 const primaryLinks = sections.filter((s) => primaryIds.includes(s.id));
-const moreLinks = sections.filter(
-  (s) => !primaryIds.includes(s.id) && !["inicio", "sobre-mi", "contacto"].includes(s.id)
-);
 const aboutLink = sections.find((s) => s.id === "sobre-mi");
 const contactLink = sections.find((s) => s.id === "contacto");
 
 export default function Navbar() {
   const scrolled = useScrolled();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef(null);
-
-  // Cierra el menú "Explorar" si haces clic afuera
-  useEffect(() => {
-    const onClickOutside = (e) => {
-      if (moreRef.current && !moreRef.current.contains(e.target)) {
-        setMoreOpen(false);
-      }
-    };
-    document.addEventListener("click", onClickOutside);
-    return () => document.removeEventListener("click", onClickOutside);
-  }, []);
 
   const linkColor = scrolled
     ? "text-ink-soft hover:text-forest"
@@ -64,33 +48,6 @@ export default function Navbar() {
                 {s.label}
               </NavLink>
             ))}
-
-            {/* Menú "Explorar" */}
-            <div className="relative" ref={moreRef}>
-              <button
-                type="button"
-                onClick={() => setMoreOpen((v) => !v)}
-                className={`link-underline flex items-center gap-1 text-sm font-semibold ${linkColor}`}
-              >
-                Explorar
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              {moreOpen && (
-                <div className="absolute right-0 top-full mt-3 grid w-80 grid-cols-2 gap-1 rounded-2xl glass-deep p-3 shadow-petal-lg">
-                  {moreLinks.map((s) => (
-                    <Link
-                      key={s.id}
-                      to={s.path}
-                      onClick={() => setMoreOpen(false)}
-                      className="link-underline rounded-lg px-3 py-2 text-sm text-ink hover:bg-sage/15"
-                    >
-                      {s.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
 
             <NavLink
               to={aboutLink.path}

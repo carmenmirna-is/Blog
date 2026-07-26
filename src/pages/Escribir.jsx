@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import { sections } from "../data/sections";
 
+const writableOptions = [
+  { value: "biblioteca", label: "Biblioteca" },
+  { value: "blog", label: "Blog" },
+];
 
-const writableSections = sections.filter((s) =>
-  ["biblioteca", "blog", "tecnologia", "ingenieria-de-datos", "sociedad",
-   "investigacion", "proyecto-cafeteria", "novelas", "poemas"].includes(s.id)
-);
+const blogCategories = [
+  "Personal",
+  "Mi Carrera",
+  "Sociedad",
+  "Investigación",
+  "Proyecto Cafetería",
+  "Novelas",
+  "Poemas",
+];
 
 export default function Escribir() {
-  const [status, setStatus] = useState(null); // null | "uploading" | "sending" | "success" | "error"
+  const [status, setStatus] = useState(null);
   const [file, setFile] = useState(null);
 
   const [form, setForm] = useState({
     section: "blog",
+    category: "Personal",
     title: "",
     excerpt: "",
     content: "",
@@ -29,7 +38,6 @@ export default function Escribir() {
     setFile(e.target.files[0] ?? null);
   };
 
-  // Devuelve 'image' | 'audio' | 'video' | null según el tipo real del archivo
   const getMediaType = (f) => {
     if (!f) return null;
     if (f.type.startsWith("image/")) return "image";
@@ -44,10 +52,8 @@ export default function Escribir() {
     let media_url = null;
     let media_type = null;
 
-    // 1. Si hay archivo, primero lo subimos al bucket
     if (file) {
       setStatus("uploading");
-
       const fileExt = file.name.split(".").pop();
       const filePath = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
 
@@ -61,7 +67,6 @@ export default function Escribir() {
         return;
       }
 
-      // 2. Pedimos la URL pública del archivo recién subido
       const { data: publicUrlData } = supabase.storage
         .from("post-media")
         .getPublicUrl(filePath);
@@ -70,19 +75,36 @@ export default function Escribir() {
       media_type = getMediaType(file);
     }
 
-    // 3. Ahora sí, guardamos el post completo (con o sin archivo)
     setStatus("sending");
 
-    const { error } = await supabase
-      .from("posts")
-      .insert([{ ...form, media_url, media_type }]);
+    const payload = {
+      section: form.section,
+      category: form.section === "blog" ? form.category : null,
+      title: form.title,
+      excerpt: form.excerpt,
+      content: form.content,
+      tag: form.tag,
+      date_label: form.date_label,
+      media_url,
+      media_type,
+    };
+
+    const { error } = await supabase.from("posts").insert([payload]);
 
     if (error) {
       console.error(error);
       setStatus("error");
     } else {
       setStatus("success");
-      setForm({ section: "blog", title: "", excerpt: "", content: "", tag: "", date_label: "" });
+      setForm({
+        section: "blog",
+        category: "Personal",
+        title: "",
+        excerpt: "",
+        content: "",
+        tag: "",
+        date_label: "",
+      });
       setFile(null);
     }
   };
@@ -90,15 +112,15 @@ export default function Escribir() {
   const isBusy = status === "uploading" || status === "sending";
 
   return (
-    <div className="min-h-screen bg-cream px-6 py-16">
-      <div className="mx-auto max-w-2xl rounded-2xl bg-paper/80 p-8 shadow-petal">
-        <h1 className="mb-6 font-display text-2xl font-semibold text-ink">
+    <div className="min-h-screen bg-cream px-6 py-16 pt-32 dark:bg-night">
+      <div className="mx-auto max-w-2xl rounded-2xl bg-paper/85 p-8 shadow-petal dark:bg-night/40">
+        <h1 className="mb-6 font-display text-2xl font-semibold text-ink dark:text-cream">
           Escribir nueva entrada
         </h1>
 
         {status === "success" && (
           <p className="mb-4 rounded-lg bg-sage/15 px-4 py-3 text-sm text-sage-deep">
-            ¡Entrada publicada! Ya puedes verla en su sección.
+            ¡Entrada publicada!
           </p>
         )}
         {status === "error" && (
@@ -109,96 +131,105 @@ export default function Escribir() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-semibold text-ink">Sección</label>
+            <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Sección</label>
             <select
               name="section"
               value={form.section}
               onChange={handleChange}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             >
-              {writableSections.map((s) => (
-                <option key={s.id} value={s.id}>{s.label}</option>
+              {writableOptions.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
               ))}
             </select>
           </div>
 
+          {form.section === "blog" && (
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Categoría</label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
+              >
+                {blogCategories.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div>
-            <label className="mb-1 block text-sm font-semibold text-ink">Título</label>
+            <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Título</label>
             <input
               name="title"
               value={form.title}
               onChange={handleChange}
               required
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-ink">Extracto (resumen corto)</label>
+            <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Extracto (resumen corto)</label>
             <textarea
               name="excerpt"
               value={form.excerpt}
               onChange={handleChange}
               rows={2}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-ink">Contenido completo</label>
+            <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Contenido completo</label>
             <textarea
               name="content"
               value={form.content}
               onChange={handleChange}
               rows={8}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-semibold text-ink">Etiqueta</label>
+              <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Etiqueta</label>
               <input
                 name="tag"
                 value={form.tag}
                 onChange={handleChange}
                 placeholder="Ensayo, Reseña…"
-                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-semibold text-ink">Fecha a mostrar</label>
+              <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">Fecha a mostrar</label>
               <input
                 name="date_label"
                 value={form.date_label}
                 onChange={handleChange}
                 placeholder="Jul 2026"
-                className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink"
               />
             </div>
           </div>
 
-          {/* Campo nuevo: archivo adjunto */}
           <div>
-            <label className="mb-1 block text-sm font-semibold text-ink">
+            <label className="mb-1 block text-sm font-semibold text-ink dark:text-cream">
               Foto, audio o video (opcional)
             </label>
             <input
               type="file"
               accept="image/*,audio/*,video/*"
               onChange={handleFileChange}
-              className="w-full rounded-lg border border-ink-soft/20 px-3 py-2 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-sage/20 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-sage-deep"
+              className="w-full rounded-lg border border-ink-soft/20 bg-paper px-3 py-2 text-sm text-ink file:mr-3 file:rounded-full file:border-0 file:bg-sage/20 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-sage-deep"
             />
-            {file && (
-              <p className="mt-1 text-xs text-ink-soft">Seleccionado: {file.name}</p>
-            )}
+            {file && <p className="mt-1 text-xs text-ink-soft">Seleccionado: {file.name}</p>}
           </div>
 
-          <button
-            type="submit"
-            disabled={isBusy}
-            className="btn-primary w-full px-6 py-2.5 text-sm"
-          >
+          <button type="submit" disabled={isBusy} className="btn-primary w-full px-6 py-2.5 text-sm">
             {status === "uploading" && "Subiendo archivo…"}
             {status === "sending" && "Publicando…"}
             {!isBusy && "Publicar entrada"}
