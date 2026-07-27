@@ -1,16 +1,48 @@
-# React + Vite
+# 🌙 Rincón Encantado
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Blog personal donde comparto mi proceso de aprendizaje técnico junto con mis intereses creativos — escritura, música y repostería. Un espacio propio, más allá de un portafolio puramente corporativo.
 
-Currently, two official plugins are available:
+🔗 **Demo en vivo:** [hotarumori.vercel.app](https://hotarumori.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Sobre el proyecto
 
-## React Compiler
+Quería un lugar donde publicar reflexiones sin estar limitada al formato rígido de un portafolio profesional: entradas sobre lo que voy aprendiendo como desarrolladora, pero también sobre proyectos personales y creativos que no tienen que ver directamente con código.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Stack técnico
 
-## Expanding the ESLint configuration
+- **React** — interfaz de usuario
+- **Vite** — build tool y entorno de desarrollo
+- **JavaScript**
+- **Supabase** — backend (base de datos y almacenamiento de las entradas del blog)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Funcionalidades
+
+- Publicación y visualización de entradas de blog
+- Backend real conectado a Supabase (no datos mockeados)
+- Diseño responsivo
+
+## 📸 Capturas de pantalla
+
+### Dashboard
+![dashboard](assets/dashboard.png)
+
+### Blog
+![blog](assets/blog.png)
+
+### Playlist
+![playlist](assets/playlist.png)
+
+## 📦 Instalación local
+
+```bash
+git clone https://github.com/carmenmirna-is/Blog.git
+cd Blog
+npm install
+npm run dev
+```
+
+## 👩‍💻 Autora
+
+**Carmen Mirna Ibañez Sanguino** — Ingeniera de Sistemas | Full Stack Developer
+- [Portafolio](https://carmenmirna.vercel.app/)
+- [LinkedIn](https://www.linkedin.com/in/carmen-mirna)
